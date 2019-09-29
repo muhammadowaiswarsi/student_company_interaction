@@ -11,7 +11,9 @@ class Signup extends Component {
             phone: "13234567899",
             email: "muhammadowaiswarsi@gmail.com",
             password: "Hello123!",
-            confirmPassword: ""
+            confirmPassword: "",
+            state: "",
+            city: ""
         }
     }
 
@@ -23,9 +25,14 @@ class Signup extends Component {
 
     submit = (e) => {
         e.preventDefault()
-        let { email, password } = this.state
+        let { email, password, firstName, lastName, phone, state, city } = this.state
         let obj = {
             email,
+            firstName,
+            lastName,
+            phone,
+            state,
+            city,
             password
         }
         this.props.submit(obj)
@@ -33,7 +40,7 @@ class Signup extends Component {
 
 
     render() {
-        let { firstName, lastName, email, password, confirmPassword, phone } = this.state
+        let { firstName, lastName, email, password, confirmPassword, phone, state, city } = this.state
         return (
             <div>
                 <form onSubmit={this.submit}>
@@ -54,6 +61,12 @@ class Signup extends Component {
 
                     <InputField name="confirmPassword" value={confirmPassword} className="MB30" label="Confirm Password"
                         type="password" placeholder="" onChange={(e) => this.handleChange(e)} />
+
+                    <InputField name="state" label="State"
+                        type="text" placeholder="" value={state} onChange={(e) => this.handleChange(e)} />
+
+                    <InputField name="city" label="City"
+                        type="text" placeholder="" value={city} onChange={(e) => this.handleChange(e)} />
                     <div className="flex-end">
                         <Button type="submit" title="Sign Up" />
                     </div>

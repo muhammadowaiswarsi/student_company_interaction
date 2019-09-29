@@ -3,16 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "bootstrap": "^4.3.1",
+    "apollo-boost": "^0.4.4",
     "aws-amplify": "^1.1.40",
-    "react-redux": "^7.1.1",
-    "redux": "^4.0.4",
-    "redux-observable": "^1.2.0",
+    "aws-appsync": "^2.0.0",
+    "aws-appsync-react": "^2.0.0",
+    "bootstrap": "^4.3.1",
+    "graphql-tag": "^2.10.1",
     "react": "^16.9.0",
+    "react-apollo": "^3.1.1",
     "react-bootstrap": "^1.0.0-beta.12",
     "react-dom": "^16.9.0",
+    "react-redux": "^7.1.1",
     "react-router-dom": "^5.1.0",
-    "react-scripts": "3.1.2"
+    "react-scripts": "3.1.2",
+    "redux": "^4.0.4",
+    "redux-observable": "^1.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

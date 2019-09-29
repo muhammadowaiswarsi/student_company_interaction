@@ -24,4 +24,4 @@ yarn-debug.log*
 yarn-error.log*
 
 
-/src/Config
+/src/Config/credentials.js
