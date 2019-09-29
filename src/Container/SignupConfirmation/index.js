@@ -8,13 +8,13 @@ class SignupConfirmation extends React.Component {
 
     confirmationCodeFunc = (code) => {
         console.log(this.props)
-        // confirm(this.props.user.email, code)
-        //     .then((res) => {
-        //         console.log(res)
-        //     })
-        //     .catch((err) => {
-        //         console.log(err)
-        //     })
+        confirm(this.props.user.email, code)
+            .then((res) => {
+                console.log(res)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
     render() {
         return (
@@ -33,7 +33,7 @@ class SignupConfirmation extends React.Component {
 const mapStateToProp = state => {
     console.log(state)
     return {
-        user: state.user
+        user: state.routeReducer.user
     }
 }
 
