@@ -4,12 +4,16 @@ export const signup = (userObj) => {
     const {
         email,
         password,
+        profile
     } = userObj;
     return new Promise(async (resolve, reject) => {
         try {
             const newUser = await Auth.signUp({
                 username: email,
                 password,
+                attributes: {
+                    profile
+                }
             });
             resolve({ user_id: newUser.userSub, confirmed: false });
         } catch (error) {

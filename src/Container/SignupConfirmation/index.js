@@ -6,14 +6,12 @@ import { AppSync } from "./../../Config/graphql-config"
 import { connect } from "react-redux";
 import { Mutation } from "react-apollo";
 import { signupStudent, signupCompany } from "./../../Config/Queries"
-import { routeAction } from "./../../store/actions"
 
 class SignupConfirmation extends React.Component {
 
     confirmationCodeFunc = (code, signupStudent, signupCompany) => {
         confirm(this.props.user.user_id, code)
             .then((res) => {
-                console.log(res)
                 let { firstName, lastName, email, city, state, company, user_id } = this.props.user
                 let { type } = this.props.match.params
                 if (type === "student") {
@@ -27,12 +25,11 @@ class SignupConfirmation extends React.Component {
                             student_id: user_id
                         }
                     }).then((res) => {
-                        console.log(res)
-                        this.props.history.push("/student/main")
+                        this.props.history.push("/")
                     }).catch((err) => {
                         console.log(err)
                     })
-                } else {
+                } else if (type === "company") {
                     signupCompany({
                         variables: {
                             companyName: company,
@@ -42,9 +39,7 @@ class SignupConfirmation extends React.Component {
                             company_id: user_id
                         }
                     }).then((res) => {
-                        console.log(res)
-                        this.props.authed(true)
-                        this.props.history.push("/company/main")
+                        this.props.history.push("/")
                     }).catch((err) => {
                         console.log(err)
                     })
@@ -83,16 +78,10 @@ class SignupConfirmation extends React.Component {
     }
 }
 
-const mapDispatchToProp = dispatch => {
-    return {
-        authed: (flag) => { dispatch(routeAction.authed(flag)) }
-    }
-}
-
 const mapStateToProp = state => {
     return {
         user: state.routeReducer.user
     }
 }
 
-export default connect(mapStateToProp, mapDispatchToProp)(SignupConfirmation);
+export default connect(mapStateToProp, null)(SignupConfirmation);

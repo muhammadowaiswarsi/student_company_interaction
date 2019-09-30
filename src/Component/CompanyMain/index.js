@@ -3,9 +3,7 @@ import { Col, Button } from 'react-bootstrap';
 import "./index.css";
 
 class ComapanyMain extends Component {
-    constructor(props) {
-        super(props)
-    }
+  
 
     render() {
         let { StudentsData, currentUser } = this.props

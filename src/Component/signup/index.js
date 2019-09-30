@@ -6,11 +6,11 @@ class Signup extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            firstName: "muhammad",
-            lastName: "owais warsi",
-            phone: "13234567899",
-            email: "muhammadowaiswarsi@gmail.com",
-            password: "Hello123!",
+            firstName: "",
+            lastName: "",
+            phone: "",
+            email: "",
+            password: "",
             confirmPassword: "",
             state: "",
             company: "",
@@ -69,7 +69,7 @@ class Signup extends Component {
                     <InputField name="password" value={password} label="Password"
                         type="password" placeholder="" onChange={(e) => this.handleChange(e)} />
 
-                    <InputField name="confirmPassword" value={confirmPassword} className="MB30" label="Confirm Password"
+                    <InputField name="confirmPassword" value={confirmPassword} label="Confirm Password"
                         type="password" placeholder="" onChange={(e) => this.handleChange(e)} />
 
                     <InputField name="state" label="State"

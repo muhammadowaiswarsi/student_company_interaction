@@ -2,24 +2,21 @@ import React from 'react';
 import Signup from '../../Component/signup';
 import { Col } from "react-bootstrap";
 import { connect } from "react-redux";
-import { signup } from "./../../Service/AuthService";
 import { routeAction } from "./../../store/actions/index"
+import { signup } from "./../../Service/AuthService";
 import "./index.css";
 
 class SignupContainer extends React.Component {
-    constructor(props) {
-        super(props)
-    }
 
     submit = (obj) => {
+        let { type } = this.props.match.params
+        obj.profile = type === "student" ? "student" : "company"
         signup(obj)
             .then((res) => {
-                console.log(res)
                 obj.user_id = res.user_id
                 this.props.user(obj)
                 this.props.confirmRoute(true)
                 setTimeout(() => {
-                    let { type } = this.props.match.params
                     this.props.history.push(`/confirmation/${type}`)
                 }, 100);
             }).catch((err) => {

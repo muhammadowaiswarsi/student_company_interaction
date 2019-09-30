@@ -6,7 +6,9 @@ import CompanyMain from '../Container/CompanyMain';
 import SignupConfirmation from '../Container/SignupConfirmation';
 import SignupContainer from '../Container/Signup';
 import { connect } from "react-redux";
-import Loading from "./../Container/LoaderScreen"
+import routeAction from "./../store/actions/routeAction";
+import Loading from "./../Container/LoaderScreen";
+import { isLoggedIn } from "./../Service/AuthService"
 
 
 function PrivateRoute({ component: Component, authed, ...rest }) {
@@ -43,6 +45,27 @@ class Routes extends Component {
 
     }
 
+    componentDidMount() {
+        isLoggedIn()
+            .then((res) => {
+                if (res.attributes.sub) {
+                    // this.props.authed(true)
+                    let user = res.attributes
+                    this.props.user(user.sub)
+                    // if (user.profile === "student") {
+                    //         this.props.history.push(`/student/main`)
+                    //     } else if (user.profile === "company") {
+                    //         this.props.history.push(`/company/main`)
+                    //     }
+                    // } else {
+                    //     this.props.history.push("/login")
+                }
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
     render() {
         return (
             <Router>
@@ -59,6 +82,12 @@ class Routes extends Component {
     }
 }
 
+const mapDispatchToProp = dispatch => {
+    return {
+        user: (payload) => { dispatch(routeAction.user(payload)) }
+    }
+}
+
 const mapStateToProp = (state) => {
     let { routeReducer } = state
     return {
@@ -67,4 +96,4 @@ const mapStateToProp = (state) => {
     }
 }
 
-export default connect(mapStateToProp, null)(Routes);
+export default connect(mapStateToProp, mapDispatchToProp)(Routes);

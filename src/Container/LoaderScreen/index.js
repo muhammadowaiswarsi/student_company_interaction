@@ -1,5 +1,7 @@
 import React from "react";
-import { isLoggedIn } from "./../../Service/AuthService"
+import { isLoggedIn } from "./../../Service/AuthService";
+import routeAction from "./../../store/actions/routeAction";
+import { connect } from "react-redux";
 
 class Loading extends React.Component {
 
@@ -7,14 +9,21 @@ class Loading extends React.Component {
     componentDidMount() {
         isLoggedIn()
             .then((res) => {
-                console.log(res)
-                if (res === "not authenticated") {
-                    this.props.history.push("/login")
+                if (res.attributes.sub) {
+                    this.props.authed(true)
+                    let user = res.attributes
+                    this.props.user(user.sub)
+                    if (user.profile === "student") {
+                        this.props.history.push(`/student/main`)
+                    } else if (user.profile === "company") {
+                        this.props.history.push(`/company/main`)
+                    }
                 } else {
-                    console.log("hello world")
+                    this.props.history.push("/login")
                 }
             })
             .catch((err) => {
+                this.props.history.push("/login")
                 console.log(err)
             })
     }
@@ -28,5 +37,11 @@ class Loading extends React.Component {
     }
 }
 
+const dispatchToProp = dispatch => {
+    return {
+        authed: (payload) => { dispatch(routeAction.confirm_route(payload)) },
+        user: (obj) => { dispatch(routeAction.user(obj)) }
+    }
+}
 
-export default Loading;
+export default connect(null, dispatchToProp)(Loading);

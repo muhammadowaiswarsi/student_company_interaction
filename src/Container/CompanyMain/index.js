@@ -15,7 +15,6 @@ class CompanyMainContainer extends React.Component {
         console.log("asfas")
         logout()
             .then((res) => {
-                console.log(res)
                 this.props.authed(false)
                 this.props.history.push("/")
             })
@@ -31,7 +30,7 @@ class CompanyMainContainer extends React.Component {
                     fetchPolicy="network-only"
                     client={AppSync}
                     query={getCompanyData}
-                    variables={{ companyID: `9a589299-9d16-4027-9b15-36ff6fc6c48f` }}
+                    variables={{ companyID: this.props.user.user_id }}
                 >
                     {({ loading, error, data }) => {
                         let currentUser = data && data.getCompanyData
@@ -40,12 +39,12 @@ class CompanyMainContainer extends React.Component {
                                 fetchPolicy="network-only"
                                 client={AppSync}
                                 query={getStudents}
-                                variables={{ companyID: `123456` }}
+                                variables={{ companyID: this.props.user.user_id }}
                             >
                                 {({ loading, error, data }) => {
                                     let StudentsData = data.getStudents
                                     return (
-                                        <CompanyMain logout={this.logout()} StudentsData={StudentsData} currentUser={currentUser} />
+                                        <CompanyMain logout={this.logout} StudentsData={StudentsData} currentUser={currentUser} />
                                     )
                                 }}
                             </Query>
@@ -64,4 +63,10 @@ const mapDispatchToProp = dispatch => {
     }
 }
 
-export default connect(null, mapDispatchToProp)(CompanyMainContainer);
+const mapStateToProp = state => {
+    return {
+        user: state.routeReducer.user
+    }
+}
+
+export default connect(mapStateToProp, mapDispatchToProp)(CompanyMainContainer);

@@ -1,14 +1,17 @@
 import React from 'react'
 import Login from '../../Component/login'
-import { Tabs, Tab, Container, Row, Col, Form, FormControl } from 'react-bootstrap'
+import { Col, Form } from 'react-bootstrap'
 import "./index.css";
 import { login } from "./../../Service/AuthService"
+import { connect } from "react-redux";
+import routeAction from "./../../store/actions/routeAction"
 
 class LoginContainer extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            student: true
+            student: true,
+            company: false
         }
     }
 
@@ -28,10 +31,22 @@ class LoginContainer extends React.Component {
 
     loginFunc = (obj) => {
         let { email, password } = obj
-        console.log(obj)
+        let { student, company } = this.state
         login(email, password)
             .then((res) => {
-                console.log(res)
+                let user = res.attributes
+                let obj = {
+                    email: user.email,
+                    user_id: user.sub
+                }
+                this.props.user(obj)
+                if ((user.profile === "student") && student) {
+                    this.props.history.push("/student/main")
+                } else if ((user.profile === "company") && company) {
+                    this.props.history.push("/company/main")
+                } else {
+                    console.log("user not exist")
+                }
             })
             .catch((err) => {
                 console.log(err)
@@ -39,7 +54,6 @@ class LoginContainer extends React.Component {
     }
 
     render() {
-        console.log(this.state)
         let { student, company } = this.state
         return (
             <div className="LoginContainer flex-center-center">
@@ -77,4 +91,12 @@ class LoginContainer extends React.Component {
     }
 }
 
-export default LoginContainer;
+
+const mapDispatchToProp = dispatch => {
+    return {
+        authed: (flag) => { dispatch(routeAction.authed(flag)) },
+        user: (payload) => { dispatch(routeAction.user(payload)) }
+    }
+}
+
+export default connect(null, mapDispatchToProp)(LoginContainer);
