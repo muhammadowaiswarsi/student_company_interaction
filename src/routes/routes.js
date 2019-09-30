@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import LoginContainer from '../Container/Login';
-import MainContainer from '../Container/Main';
+import StudentMain from '../Container/StudentMain';
+import CompanyMain from '../Container/CompanyMain';
 import SignupConfirmation from '../Container/SignupConfirmation';
 import SignupContainer from '../Container/Signup';
 import { connect } from "react-redux"
@@ -46,8 +47,11 @@ class Routes extends Component {
             <Router>
                 <Route exact path="/" component={LoginContainer} />
                 <Route exact path="/registration/:type" component={SignupContainer} />
-                <PrivateRoute exact authed={this.state.authed} path="/main" component={MainContainer} />
-                <PrivateRoute exact authed={this.state.confirmRoute} path="/confirmation" component={SignupConfirmation} />
+                <Route exact path="/student/main" component={StudentMain} />
+                <Route exact path="/company/main" component={CompanyMain} />
+                {/* <PrivateRoute exact authed={this.state.authed} path="/student/main" component={StudentMain} /> */}
+                {/* <PrivateRoute exact authed={this.state.authed} path="/company/main" component={CompanyMain} /> */}
+                <PrivateRoute exact authed={this.state.confirmRoute} path="/confirmation/:type" component={SignupConfirmation} />
             </Router>
         )
     }

@@ -5,30 +5,50 @@ import { confirm } from "./../../Service/AuthService";
 import { AppSync } from "./../../Config/graphql-config"
 import { connect } from "react-redux";
 import { Mutation } from "react-apollo";
-import { signupStudent } from "./../../Config/Queries"
+import { signupStudent, signupCompany } from "./../../Config/Queries"
+import { routeAction } from "./../../store/actions"
 
 class SignupConfirmation extends React.Component {
 
-    confirmationCodeFunc = (code, signupStudent) => {
-        console.log(this.props)
+    confirmationCodeFunc = (code, signupStudent, signupCompany) => {
         // confirm(this.props.user.email, code)
         //     .then((res) => {
-        let { firstName, lastName, email, city, state, student_id } = this.props.user
+        let { firstName, lastName, email, city, state, company, user_id } = this.props.user
         // console.log(res)
-        signupStudent({
-            variables: {
-                firstName,
-                lastName,
-                email,
-                city,
-                state,
-                student_id : "123456"
-            }
-        }).then((res) => {
-            console.log(res)
-        }).catch((err) => {
-            console.log(err)
-        })
+        let { type } = this.props.match.params
+        if (type === "student") {
+            signupStudent({
+                variables: {
+                    firstName,
+                    lastName,
+                    email,
+                    city,
+                    state,
+                    student_id: user_id
+                }
+            }).then((res) => {
+                console.log(res)
+                this.props.history.push("/student/main")
+            }).catch((err) => {
+                console.log(err)
+            })
+        } else {
+            signupCompany({
+                variables: {
+                    companyName: company,
+                    email,
+                    city,
+                    state,
+                    company_id: user_id
+                }
+            }).then((res) => {
+                console.log(res)
+                this.props.authed(true)
+                this.props.history.push("/company/main")
+            }).catch((err) => {
+                console.log(err)
+            })
+        }
         // })
         // .catch((err) => {
         //     console.log(err)
@@ -43,7 +63,17 @@ class SignupConfirmation extends React.Component {
                         client={AppSync}
                         mutation={signupStudent}>
                         {(signupStudent, { loading, error }) => {
-                            return <SignupConfirm confirmationCodeFunc={(code) => this.confirmationCodeFunc(code, signupStudent)} />
+                            return (
+                                <Mutation
+                                    client={AppSync}
+                                    mutation={signupCompany}>
+                                    {(signupCompany, { loading, error }) => {
+                                        return (
+                                            <SignupConfirm confirmationCodeFunc={(code) => this.confirmationCodeFunc(code, signupStudent, signupCompany)} />
+                                        )
+                                    }}
+                                </Mutation>
+                            )
                         }}
                     </Mutation>
                 </Col>
@@ -53,12 +83,16 @@ class SignupConfirmation extends React.Component {
     }
 }
 
+const mapDispatchToProp = dispatch => {
+    return {
+        authed: (flag) => { dispatch(routeAction.authed(flag)) }
+    }
+}
 
 const mapStateToProp = state => {
-    console.log(state)
     return {
         user: state.routeReducer.user
     }
 }
 
-export default connect(mapStateToProp, null)(SignupConfirmation);
+export default connect(mapStateToProp, mapDispatchToProp)(SignupConfirmation);

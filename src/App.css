@@ -21,6 +21,10 @@
   justify-content: space-between;
 }
 
+.ML10 {
+  margin-left: 10px;
+}
+
 .text_align {
   text-align: center;
 }

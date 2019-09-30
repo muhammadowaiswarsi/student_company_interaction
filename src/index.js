@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Rehydrated } from 'aws-appsync-react';
+import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
 import Amplify from "aws-amplify";
 import config from "./Config/aws-config";
 import { ApolloProvider } from 'react-apollo';
@@ -16,7 +17,11 @@ Amplify.configure(config)
 ReactDOM.render(
   <Provider store={store}>
     <ApolloProvider client={AppSync}>
+      {/* <ApolloHooksProvider client={AppSync}> */}
+      <Rehydrated>
         <App />
+      </Rehydrated>
+      {/* </ApolloHooksProvider> */}
     </ApolloProvider>
   </Provider >
   , document.getElementById('root'));

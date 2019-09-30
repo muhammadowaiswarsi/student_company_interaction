@@ -13,6 +13,7 @@ class Signup extends Component {
             password: "Hello123!",
             confirmPassword: "",
             state: "",
+            company: "",
             city: ""
         }
     }
@@ -25,7 +26,7 @@ class Signup extends Component {
 
     submit = (e) => {
         e.preventDefault()
-        let { email, password, firstName, lastName, phone, state, city } = this.state
+        let { email, password, firstName, lastName, phone, state, city, company } = this.state
         let obj = {
             email,
             firstName,
@@ -33,6 +34,7 @@ class Signup extends Component {
             phone,
             state,
             city,
+            company,
             password
         }
         this.props.submit(obj)
@@ -40,15 +42,23 @@ class Signup extends Component {
 
 
     render() {
-        let { firstName, lastName, email, password, confirmPassword, phone, state, city } = this.state
+        let { firstName, lastName, email, password, confirmPassword, phone, state, city, company } = this.state
+        let { type } = this.props.params
         return (
             <div>
                 <form onSubmit={this.submit}>
-                    <InputField name="firstName" label="First Name"
-                        type="name" placeholder="" value={firstName} onChange={(e) => this.handleChange(e)} />
+                    {type === "student" ?
+                        <span>
+                            <InputField name="firstName" label="First Name"
+                                type="name" placeholder="" value={firstName} onChange={(e) => this.handleChange(e)} />
 
-                    <InputField name="lastName" label="Last Name"
-                        type="name" placeholder="" value={lastName} onChange={(e) => this.handleChange(e)} />
+                            <InputField name="lastName" label="Last Name"
+                                type="name" placeholder="" value={lastName} onChange={(e) => this.handleChange(e)} />
+                        </span>
+                        :
+                        <InputField name="company" label="Company Name"
+                            type="name" placeholder="" value={company} onChange={(e) => this.handleChange(e)} />
+                    }
 
                     <InputField name="email" label="Email"
                         type="email" placeholder="Student@Yale.edu" value={email} onChange={(e) => this.handleChange(e)} />

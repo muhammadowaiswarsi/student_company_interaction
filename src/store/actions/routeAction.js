@@ -1,7 +1,7 @@
 import {
     AUTHED,
     CONFIRM_ROUTE,
-    USER
+    USER,
 } from '../constant'
 
 export default class routeAction {

@@ -19,7 +19,8 @@ class SignupContainer extends React.Component {
                 this.props.user(obj)
                 this.props.confirmRoute(true)
                 setTimeout(() => {
-                    this.props.history.push("/confirmation")
+                    let { type } = this.props.match.params
+                    this.props.history.push(`/confirmation/${type}`)
                 }, 100);
             }).catch((err) => {
                 console.log(err)
@@ -31,7 +32,7 @@ class SignupContainer extends React.Component {
             <div className="SignupContainer flex-center-center">
                 <Col sm={1} md={3} lg={3} xl={4} />
                 <Col className="main_col flex-center" xs={12} sm={10} md={6} lg={6} xl={4}>
-                    <Signup submit={this.submit} />
+                    <Signup params={this.props.match.params} submit={this.submit} />
                 </Col>
                 <Col sm={1} md={3} lg={3} xl={4} />
             </div >
