@@ -11,52 +11,52 @@ import { routeAction } from "./../../store/actions"
 class SignupConfirmation extends React.Component {
 
     confirmationCodeFunc = (code, signupStudent, signupCompany) => {
-        // confirm(this.props.user.email, code)
-        //     .then((res) => {
-        let { firstName, lastName, email, city, state, company, user_id } = this.props.user
-        // console.log(res)
-        let { type } = this.props.match.params
-        if (type === "student") {
-            signupStudent({
-                variables: {
-                    firstName,
-                    lastName,
-                    email,
-                    city,
-                    state,
-                    student_id: user_id
-                }
-            }).then((res) => {
+        confirm(this.props.user.user_id, code)
+            .then((res) => {
                 console.log(res)
-                this.props.history.push("/student/main")
-            }).catch((err) => {
+                let { firstName, lastName, email, city, state, company, user_id } = this.props.user
+                let { type } = this.props.match.params
+                if (type === "student") {
+                    signupStudent({
+                        variables: {
+                            firstName,
+                            lastName,
+                            email,
+                            city,
+                            state,
+                            student_id: user_id
+                        }
+                    }).then((res) => {
+                        console.log(res)
+                        this.props.history.push("/student/main")
+                    }).catch((err) => {
+                        console.log(err)
+                    })
+                } else {
+                    signupCompany({
+                        variables: {
+                            companyName: company,
+                            email,
+                            city,
+                            state,
+                            company_id: user_id
+                        }
+                    }).then((res) => {
+                        console.log(res)
+                        this.props.authed(true)
+                        this.props.history.push("/company/main")
+                    }).catch((err) => {
+                        console.log(err)
+                    })
+                }
+            })
+            .catch((err) => {
                 console.log(err)
             })
-        } else {
-            signupCompany({
-                variables: {
-                    companyName: company,
-                    email,
-                    city,
-                    state,
-                    company_id: user_id
-                }
-            }).then((res) => {
-                console.log(res)
-                this.props.authed(true)
-                this.props.history.push("/company/main")
-            }).catch((err) => {
-                console.log(err)
-            })
-        }
-        // })
-        // .catch((err) => {
-        //     console.log(err)
-        // })
     }
     render() {
         return (
-            <div className="LoginContainer flex-center-center">
+            <div className="LoginContainer flex-center-center" >
                 <Col sm={1} md={3} lg={3} xl={4} />
                 <Col className="main_col flex-center" xs={12} sm={10} md={6} lg={6} xl={4}>
                     <Mutation

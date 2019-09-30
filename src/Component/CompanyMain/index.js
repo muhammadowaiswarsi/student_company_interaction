@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Col } from 'react-bootstrap';
-import "./index.css"
+import { Col, Button } from 'react-bootstrap';
+import "./index.css";
 
 class ComapanyMain extends Component {
     constructor(props) {
@@ -11,9 +11,13 @@ class ComapanyMain extends Component {
         let { StudentsData, currentUser } = this.props
         return (
             <div className="Main">
-                <div className="welcome_head MB30">
-                    Welcome {currentUser ? `${currentUser.companyName}` : "loading"}
+                <div className="flex-between MB10">
+                    <span className="welcome_head MB30">
+                        Welcome {currentUser ? `${currentUser.companyName}` : "loading"}
+                    </span>
+                    <Button className="logount_btn" variant="outline-secondary" onClick={() => this.props.logout()}>Logout</Button>
                 </div>
+
 
                 <div className="cards_main_div">
                     {StudentsData && StudentsData.length ? StudentsData.map((student, index) => {

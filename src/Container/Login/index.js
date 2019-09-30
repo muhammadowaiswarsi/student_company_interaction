@@ -1,7 +1,8 @@
 import React from 'react'
 import Login from '../../Component/login'
 import { Tabs, Tab, Container, Row, Col, Form, FormControl } from 'react-bootstrap'
-import "./index.css"
+import "./index.css";
+import { login } from "./../../Service/AuthService"
 
 class LoginContainer extends React.Component {
     constructor(props) {
@@ -23,6 +24,18 @@ class LoginContainer extends React.Component {
                 company: true
             })
         }
+    }
+
+    loginFunc = (obj) => {
+        let { email, password } = obj
+        console.log(obj)
+        login(email, password)
+            .then((res) => {
+                console.log(res)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     render() {
@@ -56,7 +69,7 @@ class LoginContainer extends React.Component {
                         </span>
                     </div>
 
-                    <Login student={student} company={company} history={this.props.history} />
+                    <Login login={(obj) => this.loginFunc(obj)} student={student} company={company} history={this.props.history} />
                 </Col>
                 <Col sm={1} md={3} lg={3} xl={4} />
             </div>

@@ -1,11 +1,28 @@
 import React from 'react'
 import CompanyMain from '../../Component/CompanyMain';
 import "./index.css";
+import { connect } from "react-redux";
 import { Query } from "react-apollo";
+import routeAction from "./../../store/actions/routeAction"
+import { logout } from "./../../Service/AuthService";
 import { getCompanyData, getStudents } from "./../../Config/Queries"
 import { AppSync } from "./../../Config/graphql-config"
 
+
 class CompanyMainContainer extends React.Component {
+
+    logout = () => {
+        console.log("asfas")
+        logout()
+            .then((res) => {
+                console.log(res)
+                this.props.authed(false)
+                this.props.history.push("/")
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
 
     render() {
         return (
@@ -28,7 +45,7 @@ class CompanyMainContainer extends React.Component {
                                 {({ loading, error, data }) => {
                                     let StudentsData = data.getStudents
                                     return (
-                                        <CompanyMain StudentsData={StudentsData} currentUser={currentUser} />
+                                        <CompanyMain logout={this.logout()} StudentsData={StudentsData} currentUser={currentUser} />
                                     )
                                 }}
                             </Query>
@@ -40,4 +57,11 @@ class CompanyMainContainer extends React.Component {
     }
 }
 
-export default CompanyMainContainer;
+
+const mapDispatchToProp = dispatch => {
+    return {
+        authed: (flag) => { dispatch(routeAction.authed(flag)) }
+    }
+}
+
+export default connect(null, mapDispatchToProp)(CompanyMainContainer);

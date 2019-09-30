@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Col } from 'react-bootstrap';
+import { Col, Button } from 'react-bootstrap';
 import "./index.css"
 
 class StudentMain extends Component {
@@ -11,8 +11,11 @@ class StudentMain extends Component {
         let { CompaniesData, currentUser } = this.props
         return (
             <div className="Main">
-                <div className="welcome_head MB30">
-                    Welcome {currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : "loading"}
+                <div className="flex-between MB10">
+                    <span className="welcome_head MB30">
+                        Welcome {currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : "loading"}
+                    </span>
+                    <Button className="logount_btn" variant="outline-secondary" onClick={() => this.props.logout()}>Logout</Button>
                 </div>
 
                 <div className="cards_main_div">

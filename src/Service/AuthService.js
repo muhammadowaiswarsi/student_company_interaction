@@ -20,10 +20,10 @@ export const signup = (userObj) => {
 }
 
 
-export const confirm = (email, confirmationCode) => {
+export const confirm = (user_id, confirmationCode) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const confirmedUser = await Auth.confirmSignUp({ username: email }, confirmationCode);
+            const confirmedUser = await Auth.confirmSignUp(user_id, confirmationCode);
             resolve(confirmedUser);
         } catch (error) {
             // ALERT here we can check which error we are receiving
@@ -38,7 +38,6 @@ export const login = (email, password) => {
             const user = await Auth.signIn(email, password);
             resolve(user);
         } catch (e) {
-            // ALERT here we can check which error we are receiving
             reject(e.message)
         }
 
@@ -78,4 +77,17 @@ export const changePassword = (payload) => {
                 reject(err)
             });
     })
+}
+
+
+export const isLoggedIn = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const exist = Auth.currentAuthenticatedUser()
+            resolve(exist)
+        }
+        catch (err) {
+            reject(err);
+        }
+    });
 }

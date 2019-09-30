@@ -23,6 +23,12 @@
   justify-content: space-between;
 }
 
-.Main .tex-span{
-    width: 50px;
+.logount_btn {
+  height: 40px;
+  margin-right: 30px;
+  margin-top: 10px;
+}
+
+.Main .tex-span {
+  width: 50px;
 }

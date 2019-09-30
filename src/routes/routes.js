@@ -5,7 +5,8 @@ import StudentMain from '../Container/StudentMain';
 import CompanyMain from '../Container/CompanyMain';
 import SignupConfirmation from '../Container/SignupConfirmation';
 import SignupContainer from '../Container/Signup';
-import { connect } from "react-redux"
+import { connect } from "react-redux";
+import Loading from "./../Container/LoaderScreen"
 
 
 function PrivateRoute({ component: Component, authed, ...rest }) {
@@ -45,7 +46,8 @@ class Routes extends Component {
     render() {
         return (
             <Router>
-                <Route exact path="/" component={LoginContainer} />
+                <Route exact path="/" component={Loading} />
+                <Route exact path="/login" component={LoginContainer} />
                 <Route exact path="/registration/:type" component={SignupContainer} />
                 <Route exact path="/student/main" component={StudentMain} />
                 <Route exact path="/company/main" component={CompanyMain} />
