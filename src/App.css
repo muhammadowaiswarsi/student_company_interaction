@@ -65,3 +65,9 @@
 .App-link {
   color: #09d3ac;
 }
+
+.ft-alert-text, .ft-text-alert {
+  text-align: center;
+  color: #ff0066;
+  font-weight: bold;
+}

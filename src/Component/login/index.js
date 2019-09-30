@@ -32,7 +32,7 @@ class Login extends Component {
 
 
     render() {
-        let { student, history } = this.props
+        let { student, history, loader } = this.props
         let type = ""
         if (student) {
             type = "student"
@@ -49,7 +49,7 @@ class Login extends Component {
 
                     <div className="flex-between MB20">
                         <Button onClick={() => history.push(`./registration/${type}`)} title="Register" />
-                        <Button type="submit" title="Login" />
+                        <Button type="submit" title="Login" loader={loader} />
                     </div>
                 </form>
 

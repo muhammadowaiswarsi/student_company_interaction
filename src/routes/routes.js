@@ -76,7 +76,9 @@ class Routes extends Component {
                 <Route exact path="/company/main" component={CompanyMain} />
                 {/* <PrivateRoute exact authed={this.state.authed} path="/student/main" component={StudentMain} /> */}
                 {/* <PrivateRoute exact authed={this.state.authed} path="/company/main" component={CompanyMain} /> */}
-                <PrivateRoute exact authed={this.state.confirmRoute} path="/confirmation/:type" component={SignupConfirmation} />
+                <Route exact authed={this.state.confirmRoute} path="/confirmation/:type" component={SignupConfirmation} />
+                
+                {/* <PrivateRoute exact authed={this.state.confirmRoute} path="/confirmation/:type" component={SignupConfirmation} /> */}
             </Router>
         )
     }

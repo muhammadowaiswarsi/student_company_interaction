@@ -7,6 +7,11 @@
   cursor: pointer !important;
 }
 
+.btn_style{
+  display: flex;
+  justify-content: space-evenly
+}
+
 .btn-primary:active {
   background-color: #fff !important;
   border-color: #ced4da !important;
