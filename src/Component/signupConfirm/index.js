@@ -18,6 +18,7 @@ class SignupConfirm extends Component {
         <InputFields
           label="Confirmation Code"
           onChange={e => this.setState({ confirmationCode: e.target.value })}
+          value={this.state.confirmationCode}
         />
         <div className="flex-end">
           <Button

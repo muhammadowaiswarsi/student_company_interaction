@@ -6,6 +6,7 @@ import { login } from "./../../Service/AuthService";
 import { connect } from "react-redux";
 import routeAction from "./../../store/actions/routeAction";
 import { Error } from "./../../Shared/Error";
+import { isLoggedIn } from "./../../Service/AuthService"
 
 
 class LoginContainer extends React.Component {
@@ -27,7 +28,7 @@ class LoginContainer extends React.Component {
         company: false,
         admin: false
       });
-    } else if(e.target.id === "formHorizontalRadios2") {
+    } else if (e.target.id === "formHorizontalRadios2") {
       this.setState({
         student: false,
         company: true,
@@ -37,10 +38,41 @@ class LoginContainer extends React.Component {
       this.setState({
         student: false,
         company: false,
-        admin:true
+        admin: true
       });
     }
   };
+
+  componentDidMount() {
+    isLoggedIn()
+      .then((res) => {
+        if (res.attributes.sub) {
+          let userProfile = res.attributes.profile
+          console.log(userProfile)
+          if (userProfile === "student") {
+            this.props.Studentauthed(true)
+            setTimeout(() => {
+              this.props.history.replace(`/${res.attributes.profile}/main`)
+            }, 100);
+          }
+          if (userProfile === "company") {
+            this.props.Companyauthed(true)
+            setTimeout(() => {
+              this.props.history.replace(`/${res.attributes.profile}/main`)
+            }, 100);
+          }
+          if (userProfile === "admin") {
+            this.props.Adminauthed(true)
+            setTimeout(() => {
+              this.props.history.replace(`/${res.attributes.profile}/main`)
+            }, 100);
+          }
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
   loginFunc = obj => {
     let { email, password } = obj;
@@ -60,13 +92,20 @@ class LoginContainer extends React.Component {
           loader: false
         });
         if (user.profile === "student" && student) {
-          this.props.history.push("/student/main");
+          this.props.Studentauthed(true)
+          this.props.history.replace("/student/main");
         } else if (user.profile === "company" && company) {
-          this.props.history.push("/company/main");
+          this.props.Companyauthed(true)
+          this.props.history.replace("/company/main");
         } else if (user.profile === 'admin' && admin) {
-          this.props.history.push("/admin/main")
-        }else {
+          this.props.Adminauthed(true)
+          this.props.history.replace("/admin/main")
+        } else {
           console.log("user not exist");
+          this.setState({
+            loader: false,
+            error: "user not exist"
+          });
         }
       })
       .catch(err => {
@@ -142,8 +181,14 @@ class LoginContainer extends React.Component {
 
 const mapDispatchToProp = dispatch => {
   return {
-    authed: flag => {
-      dispatch(routeAction.authed(flag));
+    Studentauthed: flag => {
+      dispatch(routeAction.Studentauthed(flag));
+    },
+    Companyauthed: flag => {
+      dispatch(routeAction.Companyauthed(flag));
+    },
+    Adminauthed: flag => {
+      dispatch(routeAction.Adminauthed(flag));
     },
     user: payload => {
       dispatch(routeAction.user(payload));

@@ -3,7 +3,7 @@
 }
 
 .SignupContainer .main_col {
-    height: 600px;
+    height: 100%;
     flex-direction: column;
     justify-content: flex-start;
     color: #7e7e7e;

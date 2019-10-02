@@ -1,9 +1,5 @@
 import React, { Component } from 'react'
-import { 
-    BrowserRouter as Router, 
-    Route, 
-    // Redirect 
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import LoginContainer from '../Container/Login';
 import StudentMain from '../Container/StudentMain';
 import CompanyMain from '../Container/CompanyMain';
@@ -15,31 +11,44 @@ import Loading from "./../Container/LoaderScreen";
 import AdminMain from "./../Container/AdminMain"
 import { isLoggedIn } from "./../Service/AuthService"
 
+function PrivateRoute({ component: Component, authed, ...rest }) {
+    return (
+        <Route
+            {...rest}
+            render={(props) => authed === true
+                ? <Component {...props} />
+                : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />}
+        />
+    )
+}
 
-// function PrivateRoute({ component: Component, authed, ...rest }) {
-//     return (
-//         <Route
-//             {...rest}
-//             render={(props) => authed === true
-//                 ? <Component {...props} />
-//                 : <Redirect to={{ pathname: '/', state: { from: props.location } }} />}
-//         />
-//     )
-// }
+
 
 class Routes extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            authed: false,
-            confirmRoute: false
+            confirmRoute: false,
+            Adminauthed: false,
+            Companyauthed: false,
+            Studentauthed: false
         }
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.authed !== this.props.authed) {
+        if (prevProps.Studentauthed !== this.props.Studentauthed) {
             this.setState({
-                authed: this.props.authed,
+                Studentauthed: this.props.Studentauthed,
+            })
+        }
+        if (prevProps.Companyauthed !== this.props.Companyauthed) {
+            this.setState({
+                Companyauthed: this.props.Companyauthed,
+            })
+        }
+        if (prevProps.Adminauthed !== this.props.Adminauthed) {
+            this.setState({
+                Adminauthed: this.props.Adminauthed,
             })
         }
         if (prevProps.confirmRoute !== this.props.confirmRoute) {
@@ -54,16 +63,18 @@ class Routes extends Component {
         isLoggedIn()
             .then((res) => {
                 if (res.attributes.sub) {
-                    // this.props.authed(true)
+                    this.setState({
+                        authed: true,
+                    })
                     let user = res.attributes
-                    this.props.user(user.sub)
-                    // if (user.profile === "student") {
-                    //         this.props.history.push(`/student/main`)
-                    //     } else if (user.profile === "company") {
-                    //         this.props.history.push(`/company/main`)
-                    //     }
-                    // } else {
-                    //     this.props.history.push("/login")
+                    let obj = {
+                        user_id: user.sub
+                    }
+                    this.props.user(obj)
+                } else {
+                    this.setState({
+                        authed: false,
+                    })
                 }
             })
             .catch((err) => {
@@ -77,14 +88,10 @@ class Routes extends Component {
                 <Route exact path="/" component={Loading} />
                 <Route exact path="/login" component={LoginContainer} />
                 <Route exact path="/registration/:type" component={SignupContainer} />
-                <Route exact path="/student/main" component={StudentMain} />
-                <Route exact path="/company/main" component={CompanyMain} />
-                <Route exact path="/admin/main" component={AdminMain} />
-                {/* <PrivateRoute exact authed={this.state.authed} path="/student/main" component={StudentMain} /> */}
-                {/* <PrivateRoute exact authed={this.state.authed} path="/company/main" component={CompanyMain} /> */}
-                <Route exact authed={this.state.confirmRoute} path="/confirmation/:type" component={SignupConfirmation} />
-
-                {/* <PrivateRoute exact authed={this.state.confirmRoute} path="/confirmation/:type" component={SignupConfirmation} /> */}
+                <PrivateRoute exact authed={this.state.Studentauthed} path="/student/main" component={StudentMain} />
+                <PrivateRoute exact authed={this.state.Companyauthed} path="/company/main" component={CompanyMain} />
+                <PrivateRoute exact authed={this.state.Adminauthed} path="/admin/main" component={AdminMain} />
+                <PrivateRoute exact authed={this.state.confirmRoute} path="/confirmation/:type" component={SignupConfirmation} />
             </Router>
         )
     }
@@ -99,7 +106,9 @@ const mapDispatchToProp = dispatch => {
 const mapStateToProp = (state) => {
     let { routeReducer } = state
     return {
-        authed: routeReducer.authed,
+        Studentauthed: routeReducer.Studentauthed,
+        Companyauthed: routeReducer.Companyauthed,
+        Adminauthed: routeReducer.Adminauthed,
         confirmRoute: routeReducer.confirmRoute
     }
 }

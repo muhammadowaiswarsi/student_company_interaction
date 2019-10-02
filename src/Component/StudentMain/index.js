@@ -11,9 +11,9 @@ class StudentMain extends Component {
           <div className="Main">
             <div className="flex-between MB10">
               <span className="welcome_head MB30">
-                Welcome{" "}
+                Welcome
                 {currentUser
-                  ? `${currentUser.firstName} ${currentUser.lastName}`
+                  ? ` ${currentUser.firstName} ${currentUser.lastName}`
                   : "loading"}
               </span>
               <Button
@@ -27,7 +27,6 @@ class StudentMain extends Component {
             </div>
 
             <div className="cards_main_div">
-              {/* <Error errMessage={"helloooo i am error"}/> */}
               {CompaniesData && CompaniesData.length
                 ? CompaniesData.map((company, index) => {
                     return (

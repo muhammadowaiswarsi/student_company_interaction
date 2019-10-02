@@ -17,31 +17,58 @@ class SignupContainer extends React.Component {
     };
   }
 
-  submit = obj => {
-    let { type } = this.props.match.params;
-    this.setState({
-      loader: true
-    });
-    obj.profile = type === "student" ? "student" : "company";
-    signup(obj)
-      .then(res => {
-        obj.user_id = res.user_id;
-        this.props.user(obj);
-        this.props.confirmRoute(true);
-        this.setState({
-          loader: false
-        });
-        setTimeout(() => {
-          this.props.history.push(`/confirmation/${type}`);
-        }, 100);
-      })
-      .catch(err => {
-        this.setState({
-          loader: false,
-          error: err.message
-        });
-        console.log(err);
+  signUpFunc = (obj) => {
+    if (obj.password === obj.confirmPassword) {
+      let { type } = this.props.match.params;
+      this.setState({
+        loader: true
       });
+      obj.profile = type === "student" ? "student" : "company";
+      signup(obj)
+        .then(res => {
+          obj.user_id = res.user_id;
+          this.props.user(obj);
+          this.props.confirmRoute(true);
+          this.setState({
+            loader: false
+          });
+          setTimeout(() => {
+            this.props.history.replace(`/confirmation/${type}`);
+          }, 100);
+        })
+        .catch(err => {
+          this.setState({
+            loader: false,
+            error: err.message
+          });
+          console.log(err);
+        });
+    } else {
+      this.setState({
+        error: "password is not matched"
+      })
+    }
+  }
+
+  submit = obj => {
+    let { firstName, lastName, email, password, confirmPassword, state, city, company } = obj
+    if (obj.profile === "student") {
+      if (firstName && lastName && email && password && confirmPassword && state && city) {
+        this.signUpFunc(obj)
+      } else {
+        this.setState({
+          error: "please fill up all fields"
+        })
+      }
+    } else {
+      if (company && email && password && confirmPassword && state && city) {
+        this.signUpFunc(obj)
+      } else {
+        this.setState({
+          error: "please fill up all fields"
+        })
+      }
+    }
   };
 
   render() {

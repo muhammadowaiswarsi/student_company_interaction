@@ -17,6 +17,7 @@
 
 .Main .Item_main_Col {
   height: 200px;
+  margin: 5px 1px;
   border: 1px solid #ced4da;
   display: flex;
   flex-direction: column;

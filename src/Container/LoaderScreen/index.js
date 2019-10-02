@@ -9,20 +9,40 @@ class Loading extends React.Component {
     isLoggedIn()
       .then(res => {
         if (res.attributes.sub) {
-          this.props.authed(true);
           let user = res.attributes;
-          this.props.user(user.sub);
+          let obj = {
+            user_id: user.sub
+          }
+          this.props.user(obj);
           if (user.profile === "student") {
-            this.props.history.push(`/student/main`);
+            setTimeout(() => {
+              this.props.Studentauthed(false);
+            }, 100);
+            this.props.history.replace(`/student/main`);
           } else if (user.profile === "company") {
-            this.props.history.push(`/company/main`);
+            setTimeout(() => {
+              this.props.Companyauthed(false);
+            }, 100);
+            this.props.history.replace(`/company/main`);
+          }
+          else if (user.profile === "admin") {
+            setTimeout(() => {
+              this.props.Adminauthed(false);
+            }, 100);
+            this.props.history.replace(`/admin/main`);
           }
         } else {
-          this.props.history.push("/login");
+          this.props.Studentauthed(false);
+          this.props.Companyauthed(false);
+          this.props.Adminauthed(false);
+          this.props.history.replace("/login");
         }
       })
       .catch(err => {
-        this.props.history.push("/login");
+        this.props.Studentauthed(false);
+        this.props.Companyauthed(false);
+        this.props.Adminauthed(false);
+        this.props.history.replace("/login");
         console.log(err);
       });
   }
@@ -52,8 +72,14 @@ class Loading extends React.Component {
 
 const dispatchToProp = dispatch => {
   return {
-    authed: payload => {
-      dispatch(routeAction.confirm_route(payload));
+    Studentauthed: flag => {
+      dispatch(routeAction.Studentauthed(flag));
+    },
+    Companyauthed: flag => {
+      dispatch(routeAction.Companyauthed(flag));
+    },
+    Adminauthed: flag => {
+      dispatch(routeAction.Adminauthed(flag));
     },
     user: obj => {
       dispatch(routeAction.user(obj));

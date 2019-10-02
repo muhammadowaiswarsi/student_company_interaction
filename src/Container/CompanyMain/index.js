@@ -27,8 +27,8 @@ class CompanyMainContainer extends React.Component {
         this.setState({
           loader: false
         });
-        this.props.authed(false);
-        this.props.history.push("/");
+        this.props.Companyauthed(false);
+        this.props.history.replace("/login");
       })
       .catch(err => {
         this.setState({
@@ -99,8 +99,8 @@ class CompanyMainContainer extends React.Component {
 
 const mapDispatchToProp = dispatch => {
   return {
-    authed: flag => {
-      dispatch(routeAction.authed(flag));
+    Companyauthed: flag => {
+      dispatch(routeAction.Companyauthed(flag));
     }
   };
 };

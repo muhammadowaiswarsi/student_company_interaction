@@ -6,7 +6,7 @@ import "./index.css";
 import { connect } from "react-redux";
 import routeAction from "./../../store/actions/routeAction";
 import { Error } from "./../../Shared/Error";
-import { Col, Form ,Row} from "react-bootstrap";
+import { Col, Form, Row } from "react-bootstrap";
 import { logout } from "./../../Service/AuthService";
 import { getStudents, getCompanies } from "./../../Config/Queries";
 
@@ -44,8 +44,8 @@ class AdminMainContainer extends React.Component {
                 this.setState({
                     loader: false
                 });
-                this.props.authed(false);
-                this.props.history.push("/");
+                this.props.Adminauthed(false);
+                this.props.history.push("/login");
             })
             .catch(err => {
                 this.setState({
@@ -62,46 +62,46 @@ class AdminMainContainer extends React.Component {
                 <div className="LoginContainer">
                     <Error errMessage={this.state.error} />
                     <Row>
-                    <Col md={4} lg={4} sm={1} xs={1}></Col>
-                    <Col
-                        md={4}
-                        lg={4}
-                        sm={10}
-                        xs={10}
-                    >
-                        <div className="flex MB20">
-                            <span
-                                className={
-                                    student ? "tabs_border_selected" : "tabs_border_unselected"
-                                }
-                            >
-                                <Form.Check
-                                    inline
-                                    type="radio"
-                                    label="Student"
-                                    id="formHorizontalRadios1"
-                                    checked={student}
-                                    onChange={e => this.handleChange(e)}
-                                />
-                            </span>
+                        <Col md={4} lg={4} sm={1} xs={1}></Col>
+                        <Col
+                            md={4}
+                            lg={4}
+                            sm={10}
+                            xs={10}
+                        >
+                            <div className="flex MB20">
+                                <span
+                                    className={
+                                        student ? "tabs_border_selected" : "tabs_border_unselected"
+                                    }
+                                >
+                                    <Form.Check
+                                        inline
+                                        type="radio"
+                                        label="Student"
+                                        id="formHorizontalRadios1"
+                                        checked={student}
+                                        onChange={e => this.handleChange(e)}
+                                    />
+                                </span>
 
-                            <span
-                                className={
-                                    company ? "tabs_border_selected" : "tabs_border_unselected"
-                                }
-                            >
-                                <Form.Check
-                                    inline
-                                    type="radio"
-                                    label="Company"
-                                    id="formHorizontalRadios2"
-                                    checked={company}
-                                    onChange={e => this.handleChange(e)}
-                                />
-                            </span>
-                        </div>
-                    </Col>
-                    <Col md={4} lg={4} sm={1} xs={1}></Col>
+                                <span
+                                    className={
+                                        company ? "tabs_border_selected" : "tabs_border_unselected"
+                                    }
+                                >
+                                    <Form.Check
+                                        inline
+                                        type="radio"
+                                        label="Company"
+                                        id="formHorizontalRadios2"
+                                        checked={company}
+                                        onChange={e => this.handleChange(e)}
+                                    />
+                                </span>
+                            </div>
+                        </Col>
+                        <Col md={4} lg={4} sm={1} xs={1}></Col>
                     </Row>
                     <Query
                         fetchPolicy="network-only"
@@ -143,9 +143,9 @@ class AdminMainContainer extends React.Component {
 
 const mapDispatchToProp = dispatch => {
     return {
-        authed: flag => {
-            dispatch(routeAction.authed(flag));
-        }
+        Adminauthed: flag => {
+            dispatch(routeAction.Adminauthed(flag));
+        },
     };
 };
 

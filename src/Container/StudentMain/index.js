@@ -27,8 +27,8 @@ class StudentMainContainer extends React.Component {
         this.setState({
           loader: false
         });
-        this.props.authed(false);
-        this.props.history.push("/");
+        this.props.Studentauthed(false);
+        this.props.history.replace("/login");
       })
       .catch(err => {
         this.setState({
@@ -100,8 +100,8 @@ class StudentMainContainer extends React.Component {
 
 const mapDispatchToProp = dispatch => {
   return {
-    authed: flag => {
-      dispatch(routeAction.authed(flag));
+    Studentauthed: flag => {
+      dispatch(routeAction.Studentauthed(flag));
     }
   };
 };

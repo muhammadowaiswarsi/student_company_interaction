@@ -6,11 +6,11 @@ import { AppSync } from "./../../Config/graphql-config";
 import { connect } from "react-redux";
 import { Mutation } from "react-apollo";
 import { signupStudent, signupCompany } from "./../../Config/Queries";
+import { routeAction } from "./../../store/actions"
 
 class SignupConfirmation extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       loader: false
     };
@@ -48,7 +48,11 @@ class SignupConfirmation extends React.Component {
             }
           })
             .then(res => {
-              this.props.history.push("/");
+              console.log(res)
+              // this.props.Studentauthed(true)
+              // setTimeout(() => {
+              this.props.history.replace(`/login`)
+              // }, 100);
             })
             .catch(err => {
               console.log(err);
@@ -64,7 +68,10 @@ class SignupConfirmation extends React.Component {
             }
           })
             .then(res => {
-              this.props.history.push("/");
+              // this.props.Companyauthed(true)
+              // setTimeout(() => {
+              this.props.history.replace(`/login`)
+              // }, 100);
             })
             .catch(err => {
               console.log(err);
@@ -126,7 +133,21 @@ const mapStateToProp = state => {
   };
 };
 
+const mapDispatchToProp = dispatch => {
+  return {
+    Studentauthed: flag => {
+      dispatch(routeAction.Studentauthed(flag));
+    },
+    Companyauthed: flag => {
+      dispatch(routeAction.Companyauthed(flag));
+    },
+    Adminauthed: flag => {
+      dispatch(routeAction.Adminauthed(flag));
+    }
+  };
+};
+
 export default connect(
   mapStateToProp,
-  null
+  mapDispatchToProp
 )(SignupConfirmation);
