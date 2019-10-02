@@ -3,18 +3,15 @@ import { Col, Button } from 'react-bootstrap';
 import "./index.css"
 
 
-class StudentMain extends Component {
+class AdminMain extends Component {
    
     render() {
-        let { CompaniesData, currentUser, loader } = this.props
+        let { CompaniesData, StudentsData, loader,  } = this.props
         return (
           <div className="Main">
             <div className="flex-between MB10">
               <span className="welcome_head MB30">
-                Welcome{" "}
-                {currentUser
-                  ? `${currentUser.firstName} ${currentUser.lastName}`
-                  : "loading"}
+                Welcome Admin
               </span>
               <Button
                 className="logount_btn"
@@ -28,6 +25,26 @@ class StudentMain extends Component {
 
             <div className="cards_main_div">
               {/* <Error errMessage={"helloooo i am error"}/> */}
+              {StudentsData && StudentsData.length ? 
+                StudentsData.map((student, index) => {
+                    return (
+                      <Col
+                        key={index}
+                        className="Item_main_Col MB10"
+                        md={3}
+                        lg={3}
+                        sm={11}
+                        xs={11}
+                      >
+                        <div className="tex-div">{`${student.firstName} ${student.lastName}`}</div>
+                        <div className="tex-div">
+                          <span className="tex-span">{student.city}</span>
+                          <span className="tex-span ML10">{student.state}</span>
+                        </div>
+                      </Col>
+                    );
+                  })
+                : null}
               {CompaniesData && CompaniesData.length
                 ? CompaniesData.map((company, index) => {
                     return (
@@ -54,4 +71,4 @@ class StudentMain extends Component {
     }
 }
 
-export default StudentMain;
+export default AdminMain;

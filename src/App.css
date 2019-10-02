@@ -21,6 +21,11 @@
   justify-content: space-between;
 }
 
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+
 .ML10 {
   margin-left: 10px;
 }

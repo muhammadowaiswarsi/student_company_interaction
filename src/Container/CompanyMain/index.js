@@ -22,7 +22,6 @@ class CompanyMainContainer extends React.Component {
     this.setState({
       loader: true
     });
-    console.log("asfas");
     logout()
       .then(res => {
         this.setState({

@@ -15,7 +15,8 @@ class LoginContainer extends React.Component {
       student: true,
       company: false,
       loader: false,
-      error: ""
+      error: "",
+      admin: false,
     };
   }
 
@@ -23,19 +24,27 @@ class LoginContainer extends React.Component {
     if (e.target.id === "formHorizontalRadios1") {
       this.setState({
         student: true,
-        company: false
+        company: false,
+        admin: false
+      });
+    } else if(e.target.id === "formHorizontalRadios2") {
+      this.setState({
+        student: false,
+        company: true,
+        admin: false
       });
     } else {
       this.setState({
         student: false,
-        company: true
+        company: false,
+        admin:true
       });
     }
   };
 
   loginFunc = obj => {
     let { email, password } = obj;
-    let { student, company } = this.state;
+    let { student, company, admin } = this.state;
     this.setState({
       loader: true
     });
@@ -54,7 +63,9 @@ class LoginContainer extends React.Component {
           this.props.history.push("/student/main");
         } else if (user.profile === "company" && company) {
           this.props.history.push("/company/main");
-        } else {
+        } else if (user.profile === 'admin' && admin) {
+          this.props.history.push("/admin/main")
+        }else {
           console.log("user not exist");
         }
       })
@@ -68,7 +79,7 @@ class LoginContainer extends React.Component {
   };
 
   render() {
-    let { student, company, loader } = this.state;
+    let { student, company, loader, admin } = this.state;
     return (
       <div className="LoginContainer flex-center-center">
         <Col sm={1} md={3} lg={3} xl={4} />
@@ -80,9 +91,9 @@ class LoginContainer extends React.Component {
           lg={6}
           xl={4}
         >
-        <Error errMessage={this.state.error} />
+          <Error errMessage={this.state.error} />
           <div className="flex MB20">
-            <span
+            <span style={{ display: admin ? 'none' : '' }}
               className={
                 student ? "tabs_border_selected" : "tabs_border_unselected"
               }
@@ -97,7 +108,7 @@ class LoginContainer extends React.Component {
               />
             </span>
 
-            <span
+            <span style={{ display: admin ? 'none' : '' }}
               className={
                 company ? "tabs_border_selected" : "tabs_border_unselected"
               }
@@ -117,6 +128,7 @@ class LoginContainer extends React.Component {
             login={obj => this.loginFunc(obj)}
             student={student}
             company={company}
+            admin={(e) => this.setState({ admin: e === 'admin' ? true : false })}
             loader={loader}
             history={this.props.history}
 
